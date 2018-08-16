@@ -22,13 +22,11 @@ export default class App extends React.Component {
         });
     }
     fetchItems(){
-        console.log(table);
         fetch(
             apiUrl+'?table='+table
         )
         .then((response)=>(response.json()))
         .then((result)=>{
-            console.log(result);
             this.setState({
                 items:result.docs
             });
@@ -42,7 +40,7 @@ export default class App extends React.Component {
             doc: _item,
             table:table
         };
-        console.log('data',data);
+        //console.log('data',data);
         fetch(
             apiUrl,
             {
@@ -51,8 +49,6 @@ export default class App extends React.Component {
             }   
         )
         .then((r)=>{
-            console.log('delete reponse',r);
-            r.text().then((t)=>{console.log(t);});
             this.fetchItems();
         })
         .catch((err)=>{
@@ -67,7 +63,7 @@ export default class App extends React.Component {
             },
             table:table
         };
-        console.log('data',data);
+        //console.log('data',data);
         fetch(
             apiUrl,
             {
@@ -76,7 +72,6 @@ export default class App extends React.Component {
             }
         )
         .then((response)=>{
-            console.log('addItem response',response);
             this.setState({newItemText:''});
             this.fetchItems();
         })
@@ -90,7 +85,7 @@ export default class App extends React.Component {
             table:table
         };
         data.doc.completed=!_item.completed;
-        console.log('data',data);
+        //console.log('data',data);
         fetch(
             apiUrl,
             {
@@ -99,7 +94,6 @@ export default class App extends React.Component {
             }
         )
         .then((response)=>{
-            console.log('toggleCompleted response',response);
             this.setState({newItemText:''});
             this.fetchItems();
         })
