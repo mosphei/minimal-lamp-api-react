@@ -17,6 +17,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
+    "minimal-lamp-api": "git+https://github.com/mosphei/minimal-crud-api.git",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "webpack": "^4.16.5",
