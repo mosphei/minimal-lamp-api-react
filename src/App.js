@@ -1,4 +1,5 @@
 import React from 'react';
+import {fetchItems,removeItem,saveItem} from './service.js';
 
 var table='sampleTodos';
 var apiUrl='./api.php';
@@ -22,13 +23,10 @@ export default class App extends React.Component {
         });
     }
     fetchItems(){
-        fetch(
-            apiUrl+'?table='+table
-        )
-        .then((response)=>(response.json()))
+        fetchItems()
         .then((result)=>{
             this.setState({
-                items:result.docs
+                items:result
             });
         })
         .catch((err)=>{
@@ -36,18 +34,7 @@ export default class App extends React.Component {
         });
     }
     removeItem(_item){
-        const data={
-            doc: _item,
-            table:table
-        };
-        //console.log('data',data);
-        fetch(
-            apiUrl,
-            {
-                method:"DELETE",
-				body:JSON.stringify(data)
-            }   
-        )
+        removeItem(_item)
         .then((r)=>{
             this.fetchItems();
         })
@@ -56,21 +43,13 @@ export default class App extends React.Component {
         });
     }
     addNewItem() {
-        const data={
-            doc: {
-                text:this.state.newItemText,
-                _id:this.state.newItemText.replace(/[^a-zA-Z0-9_-]/g,'')
-            },
-            table:table
+        const doc = {
+            text:this.state.newItemText,
+            _id:this.state.newItemText.replace(/[^a-zA-Z0-9_-]/g,'')
         };
         //console.log('data',data);
-        fetch(
-            apiUrl,
-            {
-                method:'POST',
-                body:JSON.stringify(data)
-            }
-        )
+        saveItem(doc)
+        
         .then((response)=>{
             this.setState({newItemText:''});
             this.fetchItems();
@@ -80,21 +59,14 @@ export default class App extends React.Component {
         });
     }
     toggleCompleted(_item){
-        const data={
-            doc: _item,
-            table:table
+        const doc={
+            _id:_item._id,
+            text:_item.text,
+            completed:!_item.completed
         };
-        data.doc.completed=!_item.completed;
         //console.log('data',data);
-        fetch(
-            apiUrl,
-            {
-                method:'POST',
-                body:JSON.stringify(data)
-            }
-        )
+        saveItem(doc)
         .then((response)=>{
-            this.setState({newItemText:''});
             this.fetchItems();
         })
         .catch((err)=>{
