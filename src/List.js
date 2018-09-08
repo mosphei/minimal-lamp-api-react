@@ -1,6 +1,7 @@
 import React from 'react';
 import './List.css';
 import AddForm from './AddForm';
+import ListItem from './ListItem';
 
 export default class List extends React.Component {
     constructor(props){
@@ -13,45 +14,23 @@ export default class List extends React.Component {
     }
     
     toggleCompleted(_item){
-        const idx = this.state.items.findIndex((itm)=>{return itm._id === _item._id});
-        var items=this.state.items.slice();
-        items[idx].completed = !_item.completed
-        items[idx].saving=true;
-        this.setState({items:items});
-
         const doc={
             _id:_item._id,
+            _rev:_item._rev,
             text:_item.text,
             completed:!_item.completed
         };
-        
-        saveItem(doc)
-        .then((response)=>{
-            this.fetchItems();
-        })
-        .catch((err)=>{
-            console.log('err updating item',err);
-        });
+        this.props.saveItem(doc);
     }
     render() {
         return (<div>
-            <ul className="list-group">
+            <ul  style={{listStyleType:'none'}}>
                 {
                     this.props.items.map((item)=>{
-                        return <li key={item._id} className="list-group-item">
-                            <label>
-                                <input type='checkbox' checked={item.completed} 
-                                    onChange={()=>{this.toggleCompleted(item)}}
-                                    />
-                                {item.text}
-                            </label>
-                            {item.saving ? ' saving... ':''}
-                            <span className='pull-right' onClick={()=>{
-                                this.props.removeItem(item)
-                            }}>
-                                <i className="glyphicon glyphicon-remove"></i>
-                            </span>
-                        </li>;
+                        return <ListItem key={item._id} 
+                            item={item} 
+                            toggleCompleted={()=>{this.toggleCompleted(item);}}
+                        />
                     })
                 }
             </ul>

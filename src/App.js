@@ -45,9 +45,27 @@ export default class App extends React.Component {
     }
     saveItem(item) {
         console.log('App.js saveItem item',item);
-        saveItem(item)        
+        const idx = this.state.items.findIndex((itm)=>{return itm._id === item._id});
+        var items=this.state.items.slice();
+        if (idx >= 0) {
+            items[idx]=item;
+            items[idx].saving=true;
+        } else {
+            items.push({
+                _id:item._id,
+                text:item.text,
+                saving:true
+            });
+        }
+        this.setState({items:items});
+        var doc={
+            _id:item._id,
+            _rev:item._rev,
+            text:item.text,
+            completed:item.completed
+        };
+        saveItem(doc)        
         .then((response)=>{
-            this.setState({newItemText:''});
             this.fetchItems();
         })
         .catch((err)=>{
