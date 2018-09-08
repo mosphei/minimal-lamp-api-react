@@ -17,7 +17,7 @@ function generateDocs(_count) {
             completed:false
         });
     }
-    return retval
+    return retval;
 }
 
 var items=generateDocs(10);
