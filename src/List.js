@@ -30,6 +30,8 @@ export default class List extends React.Component {
                         return <ListItem key={item._id} 
                             item={item} 
                             toggleCompleted={()=>{this.toggleCompleted(item);}}
+                            saveItem={(itm)=>{this.props.saveItem(itm)}}
+                            removeItem={()=>{this.removeItem(item)}}
                         />
                     })
                 }
