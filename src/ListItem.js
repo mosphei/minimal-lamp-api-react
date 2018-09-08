@@ -41,16 +41,19 @@ export default class ListItem extends React.Component {
         let appendButtons;
         if (this.props.item.saving) {
             appendButtons=[
-                <span className='input-group-text'>saving...</span>
+                <span className='input-group-text' key='saving'>
+                    saving...
+                </span>
             ];
         } else if (this.state.text === this.props.item.text) {
             appendButtons=[
-                <button className="btn btn-outline-default">
+                <button className="btn btn-outline-default" key='opener'>
                     <i className="glyphicon glyphicon-menu-down"></i>
                 </button>,
-                <button className="btn btn-danger" onClick={()=>{
-                    this.props.removeItem(item)
-                }}>
+                <button className="btn btn-danger" key='remover'
+                    onClick={()=>{
+                        this.props.removeItem(item)
+                    }}>
                     <i className="glyphicon glyphicon-remove"></i>
                 </button>
             ];
