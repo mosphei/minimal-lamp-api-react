@@ -22,7 +22,10 @@ export default class App extends React.Component {
         fetchItems()
         .then((result)=>{
             this.setState({
-                items:result
+                items:result.map((i)=>{
+                    i.parentId=i.parentId || 'root';
+                    return i;
+                })
             });
         })
         .catch((err)=>{
@@ -62,7 +65,8 @@ export default class App extends React.Component {
             _id:item._id,
             _rev:item._rev,
             text:item.text,
-            completed:item.completed
+            completed:item.completed,
+            parentId:item.parentId
         };
         saveItem(doc)        
         .then((response)=>{

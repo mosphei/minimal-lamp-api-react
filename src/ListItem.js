@@ -1,10 +1,17 @@
 import React from 'react';
+import List from './List';
 
 export default class ListItem extends React.Component {
     constructor(props) {
         super(props);
+        const subitems=this.props.items.filter((i)=>{return i.parentId === props.item._id});
+        const allCompleted=subitems.reduce((acc,curr)=>{
+            return acc && curr.completed;
+        },true);
         this.state={
-            text:props.item.text
+            text:props.item.text,
+            subitems:subitems,
+            expanded:props.item.completed || !allCompleted
         };
     }
     handleTextChange(evt){
@@ -23,6 +30,10 @@ export default class ListItem extends React.Component {
             this.saveTextChange();
         }
         
+    }
+    toggleExpanded() {
+        const expanded=!this.state.expanded;
+        this.setState({expanded:expanded});
     }
     cancelTextChange(){
         this.setState({
@@ -48,7 +59,10 @@ export default class ListItem extends React.Component {
         } else if (this.state.text === this.props.item.text) {
             appendButtons=[
                 <button className="btn btn-outline-default" key='opener'>
-                    <i className="glyphicon glyphicon-menu-down"></i>
+                    <i 
+                        className={"glyphicon glyphicon-menu-"+(this.state.expanded ? 'up':'down')}
+                        onClick={()=>{this.toggleExpanded()}}
+                    ></i>
                 </button>,
                 <button className="btn btn-danger" key='remover'
                     onClick={()=>{
@@ -59,14 +73,16 @@ export default class ListItem extends React.Component {
             ];
         } else {
             appendButtons=[
-                <button className="btn btn-primary"
+                <button className="btn btn-primary" key='savebutton'
                     onClick={()=>{this.saveTextChange()}}
                     >
                     Save
                 </button>,
-                <button className="btn btn-danger" onClick={()=>{
-                    this.cancelTextChange()
-                }}>
+                <button className="btn btn-danger" key='cb'
+                    onClick={()=>{
+                        this.cancelTextChange()
+                    }}
+                    >
                     Cancel
                 </button>
             ];
@@ -89,6 +105,21 @@ export default class ListItem extends React.Component {
                 {appendButtons}
             </div>
         </div>
+        {this.state.expanded ? 
+            <div style={{paddingLeft:'1em'}}>
+                <List parentId={this.props.item._id} 
+                    items={this.props.items} 
+                    removeItem={(itm)=>{
+                        this.props.removeItem(itm)
+                    }}
+                    saveItem={(itm)=>{
+                        this.props.saveItem(itm)
+                    }}
+                />            
+            </div>
+            :
+            ''
+        }
         </li>);
     }
 }

@@ -14,12 +14,8 @@ export default class List extends React.Component {
     }
     
     toggleCompleted(_item){
-        const doc={
-            _id:_item._id,
-            _rev:_item._rev,
-            text:_item.text,
-            completed:!_item.completed
-        };
+        const doc=Object.assign({},_item);
+        doc.completed=!_item.completed;
         this.props.saveItem(doc);
     }
     render() {
@@ -27,12 +23,14 @@ export default class List extends React.Component {
             <ul  style={{listStyleType:'none'}}>
                 {
                     this.props.items.map((item)=>{
-                        return <ListItem key={item._id} 
-                            item={item} 
-                            toggleCompleted={()=>{this.toggleCompleted(item);}}
-                            saveItem={(itm)=>{this.props.saveItem(itm)}}
-                            removeItem={()=>{this.removeItem(item)}}
-                        />
+                        if (item.parentId === this.props.parentId) {
+                            return <ListItem key={item._id} 
+                                item={item} items={this.props.items}
+                                toggleCompleted={()=>{this.toggleCompleted(item);}}
+                                saveItem={(itm)=>{this.props.saveItem(itm)}}
+                                removeItem={()=>{this.removeItem(item)}}
+                            />
+                        }
                     })
                 }
             </ul>

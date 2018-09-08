@@ -17,7 +17,8 @@ export default class AddForm extends React.Component {
         evt.preventDefault();
         const doc = {
             text:this.state.newItemText,
-            _id:this.state.newItemText.replace(/[^a-zA-Z0-9_-]/g,'')
+            _id:this.state.newItemText.replace(/[^a-zA-Z0-9_-]/g,''),
+            parentId:this.props.parentId
         };
         //console.log('data',data);
         this.props.saveItem(doc);
