@@ -80,8 +80,8 @@ export default class App extends React.Component {
         return (<div className='container'>
             <h1>TODO</h1>
             <List items={this.state.items} parentId='root' 
-                removeItem={(item)=>{
-                    this.removeItem(item)
+                removeItem={(i)=>{
+                    this.removeItem(i)
                 }}
                 saveItem={(item)=>{
                     this.saveItem(item)

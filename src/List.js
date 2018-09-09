@@ -28,7 +28,7 @@ export default class List extends React.Component {
                                 item={item} items={this.props.items}
                                 toggleCompleted={()=>{this.toggleCompleted(item);}}
                                 saveItem={(itm)=>{this.props.saveItem(itm)}}
-                                removeItem={()=>{this.removeItem(item)}}
+                                removeItem={(itm)=>{this.props.removeItem(itm)}}
                             />
                         }
                     })

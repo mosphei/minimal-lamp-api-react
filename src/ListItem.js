@@ -66,7 +66,7 @@ export default class ListItem extends React.Component {
                 </button>,
                 <button className="btn btn-danger" key='remover'
                     onClick={()=>{
-                        this.props.removeItem(item)
+                        this.props.removeItem(this.props.item)
                     }}>
                     <i className="glyphicon glyphicon-remove"></i>
                 </button>
@@ -87,11 +87,12 @@ export default class ListItem extends React.Component {
                 </button>
             ];
         }
+    const itemCompleted=!!this.props.item.completed;
     return (<li>
         <div className="input-group mb-3 input-group-lg">
             <div className="input-group-prepend">
                 <div className="input-group-text">
-                    <input type='checkbox' checked={this.props.item.completed} 
+                    <input type='checkbox' checked={itemCompleted} 
                         onChange={this.props.toggleCompleted}
                         />
                 </div>

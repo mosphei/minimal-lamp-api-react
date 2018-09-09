@@ -28,7 +28,12 @@ export function saveItem(_item) {
         }
     );
 }
-function removeItem(_item) {
+export function removeItem(_item) {
+    const data={
+        doc: Object.assign({},_item),
+        table:table
+    };
+    console.log('removeItem data',data);
     return fetch(
         apiUrl,
         {
