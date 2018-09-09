@@ -40,7 +40,7 @@ export default class AddForm extends React.Component {
     }
     render() {
         const buttonClass='btn btn-' + (this.state.newItemText ? 'primary' : 'outline-default'); 
-        return (<form onSubmit={(evt)=>{this.handleSubmit(evt);}}>
+        return (<form onSubmit={(evt)=>{this.handleSubmit(evt);}} className="addForm">
             <div className="input-group mb-3 input-group-lg">
                 <input type="text" value={this.state.newItemText} 
                     onChange={(evt)=>{this.handleTextInput(evt)}}

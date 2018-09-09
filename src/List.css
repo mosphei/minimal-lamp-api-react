@@ -4,3 +4,14 @@ input[type=checkbox] {
 ul {
     padding-left:0px;
 }
+.addForm {
+    animation: fadeIn .5s;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

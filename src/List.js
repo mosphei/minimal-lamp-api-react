@@ -11,8 +11,11 @@ export default class List extends React.Component {
             showAddForm:false
         };
         this.toggleCompleted.bind(this);
+        this.showAddFormHandler.bind(this);
     }
-    
+    showAddFormHandler() {
+        this.setState({showAddForm:true});
+    }
     toggleCompleted(_item){
         const doc=Object.assign({},_item);
         doc.completed=!_item.completed;
@@ -34,9 +37,15 @@ export default class List extends React.Component {
                     })
                 }
             </ul>
-            <AddForm parentId={this.props.parentId}
-                saveItem={(item) =>{this.props.saveItem(item)}}
-            />
+            { this.state.showAddForm ? 
+                <AddForm parentId={this.props.parentId}
+                    saveItem={(item) =>{this.props.saveItem(item)}}
+                />
+                :
+                <button onClick={()=>{this.showAddFormHandler()}} className='btn btn-default'>
+                    New Item
+                </button>
+            }
         </div>);
     }
 }

@@ -6,12 +6,14 @@ export default class ListItem extends React.Component {
         super(props);
         const subitems=this.props.items.filter((i)=>{return i.parentId === props.item._id});
         const allCompleted=subitems.reduce((acc,curr)=>{
-            return acc && curr.completed;
+            console.log(curr);
+            return acc && !!curr.completed;
         },true);
+        console.log('subitems ('+allCompleted+')',subitems);
         this.state={
             text:props.item.text,
             subitems:subitems,
-            expanded:props.item.completed || !allCompleted
+            expanded:!props.item.completed && !allCompleted
         };
     }
     handleTextChange(evt){
