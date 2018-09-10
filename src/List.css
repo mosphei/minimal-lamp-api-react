@@ -1,8 +1,16 @@
 input[type=checkbox] {
     margin-right: .5em;
 }
-ul {
+.todo-list {
     padding-left:0px;
+    padding-bottom: 0px;
+    list-style-type: none;
+}
+li .todo-list {
+    padding-left:2em;
+}
+.input-group {
+    max-width: 46em;
 }
 .addForm {
     animation: fadeIn .5s;

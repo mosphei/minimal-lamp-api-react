@@ -60,11 +60,10 @@ export default class ListItem extends React.Component {
             ];
         } else if (this.state.text === this.props.item.text) {
             appendButtons=[
-                <button className="btn btn-outline-default" key='opener'>
-                    <i 
-                        className={"glyphicon glyphicon-menu-"+(this.state.expanded ? 'up':'down')}
-                        onClick={()=>{this.toggleExpanded()}}
-                    ></i>
+                <button className="btn btn-outline-default" key='opener'
+                    onClick={()=>{this.toggleExpanded();}}
+                    >
+                    <i className={"glyphicon glyphicon-menu-"+(this.state.expanded ? 'up':'down')}></i>
                 </button>,
                 <button className="btn btn-danger" key='remover'
                     onClick={()=>{
