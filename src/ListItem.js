@@ -1,6 +1,8 @@
 import React from 'react';
 import List from './List';
-
+import trashIcon from './baseline-delete-24px.svg';
+import downIcon from './baseline-keyboard_arrow_down-24px.svg';
+import upIcon from './baseline-keyboard_arrow_up-24px.svg';
 export default class ListItem extends React.Component {
     constructor(props) {
         super(props);
@@ -63,13 +65,13 @@ export default class ListItem extends React.Component {
                 <button className="btn btn-outline-default" key='opener'
                     onClick={()=>{this.toggleExpanded();}}
                     >
-                    <i className={"glyphicon glyphicon-menu-"+(this.state.expanded ? 'up':'down')}></i>
+                    <img src={this.state.expanded ? upIcon : downIcon} />
                 </button>,
                 <button className="btn btn-danger" key='remover'
                     onClick={()=>{
                         this.props.removeItem(this.props.item)
                     }}>
-                    <i className="glyphicon glyphicon-remove"></i>
+                    <img src={trashIcon} />
                 </button>
             ];
         } else {
@@ -88,27 +90,27 @@ export default class ListItem extends React.Component {
                 </button>
             ];
         }
-    const itemCompleted=!!this.props.item.completed;
-    return (<li>
-        <div className="input-group mb-3 input-group-lg">
-            <div className="input-group-prepend">
-                <div className="input-group-text">
-                    <input type='checkbox' checked={itemCompleted} 
-                        onChange={this.props.toggleCompleted}
-                        />
+        const itemCompleted=!!this.props.item.completed;
+        return (<li>
+            <div className="input-group mb-3 ">
+                <div className="input-group-prepend">
+                    <div className="input-group-text">
+                        <input type='checkbox' checked={itemCompleted} 
+                            onChange={this.props.toggleCompleted}
+                            />
+                    </div>
+                </div>
+                <textarea type="text" value={this.state.text} 
+                    className="form-control" 
+                    onChange={(event)=>{this.handleTextChange(event)}}
+                    onKeyDown={this.handleKeyPress.bind(this)}
+                    rows="1"
+                ></textarea>
+                <div className='input-group-append'>
+                    {appendButtons}
                 </div>
             </div>
-            <input type="text" value={this.state.text} 
-                className="form-control" 
-                onChange={(event)=>{this.handleTextChange(event)}}
-                onKeyDown={this.handleKeyPress.bind(this)}
-                />
-            <div className='input-group-append'>
-                {appendButtons}
-            </div>
-        </div>
-        {this.state.expanded ? 
-            <div style={{paddingLeft:'1em'}}>
+            { this.state.expanded ? 
                 <List parentId={this.props.item._id} 
                     items={this.props.items} 
                     removeItem={(itm)=>{
@@ -117,11 +119,10 @@ export default class ListItem extends React.Component {
                     saveItem={(itm)=>{
                         this.props.saveItem(itm)
                     }}
-                />            
-            </div>
-            :
-            ''
-        }
+                /> 
+                :
+                ''
+            }
         </li>);
     }
 }

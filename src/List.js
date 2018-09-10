@@ -26,31 +26,31 @@ export default class List extends React.Component {
     }
     render() {
         return (<ul className="todo-list">
-                {
-                    this.props.items.map((item)=>{
-                        if (item.parentId === this.props.parentId) {
-                            return <ListItem key={item._id} 
-                                item={item} items={this.props.items}
-                                toggleCompleted={()=>{this.toggleCompleted(item);}}
-                                saveItem={(itm)=>{this.props.saveItem(itm)}}
-                                removeItem={(itm)=>{this.props.removeItem(itm)}}
-                            />
-                        }
-                    })
-                }
-                <li>
-                    { this.state.showAddForm ? 
-                        <AddForm parentId={this.props.parentId}
-                            saveItem={(item) =>{this.props.saveItem(item)}}
+            {
+                this.props.items.map((item)=>{
+                    if (item.parentId === this.props.parentId) {
+                        return <ListItem key={item._id} 
+                            item={item} items={this.props.items}
+                            toggleCompleted={()=>{this.toggleCompleted(item);}}
+                            saveItem={(itm)=>{this.props.saveItem(itm)}}
+                            removeItem={(itm)=>{this.props.removeItem(itm)}}
                         />
-                        :
-                        <button onClick={()=>{this.showAddFormHandler()}} 
-                            className='btn btn-default'
-                            >
-                            New Item
-                        </button>
                     }
-                </li>
-            </ul>);
+                })
+            }
+            <li>
+                { this.state.showAddForm ? 
+                    <AddForm parentId={this.props.parentId}
+                        saveItem={(item) =>{this.props.saveItem(item)}}
+                    />
+                    :
+                    <button onClick={()=>{this.showAddFormHandler()}} 
+                        className='btn btn-default'
+                        >
+                        New Item
+                    </button>
+                }
+            </li>
+        </ul>);
     }
 }
