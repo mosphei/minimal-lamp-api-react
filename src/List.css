@@ -9,6 +9,12 @@ input[type=checkbox] {
 li .todo-list {
     padding-left:2em;
 }
+li:first-child {
+    padding-top: 3%;
+}
+li {
+    padding-bottom: 3%;
+}
 .input-group {
     max-width: 46em;
 }

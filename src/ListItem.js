@@ -48,6 +48,7 @@ export default class ListItem extends React.Component {
         this.props.saveItem({
             _id:this.props.item._id,
             _rev:this.props.item._rev,
+            parentId:ths.props.item.parentId,
             completed:this.props.item.completed,
             text:this.state.text
         });
@@ -92,7 +93,7 @@ export default class ListItem extends React.Component {
         }
         const itemCompleted=!!this.props.item.completed;
         return (<li>
-            <div className="input-group mb-3 ">
+            <div className="input-group ">
                 <div className="input-group-prepend">
                     <div className="input-group-text">
                         <input type='checkbox' checked={itemCompleted} 
