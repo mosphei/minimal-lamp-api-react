@@ -32,19 +32,40 @@ export default class App extends React.Component {
             console.log('err getting items',err);
         });
     }
+    getAllSubitems(_item) {
+        var items=this.state.items.filter((i)=>(i.parentId == _item._id));
+        if (items.length>0) {
+            for (var i=0;i<items.length;i++) {
+                items.push(...this.getAllSubitems(items[i]));
+            }
+        }
+        return items;
+    }
     removeItem(_item){
+        console.log('removing _item',_item);
         const idx = this.state.items.findIndex((itm)=>{return itm._id === _item._id});
         var items=this.state.items.slice();
         items[idx].saving=true;
         this.setState({items:items});
-
-        removeItem(_item)
-        .then((r)=>{
-            this.fetchItems();
-        })
-        .catch((err)=>{
-            console.log('err removing item',err);
+        return new Promise((resolve,reject)=>{
+            //first remove all subitems
+            var subitems=this.state.items.filter((i)=>(i.parentId == _item._id));
+            console.log('also delete subitems ',subitems);
+            var subpromises=subitems.map((i)=>(this.removeItem(i)));
+            Promise.all([
+                ...subpromises,
+                removeItem(_item)
+            ])
+            .then(()=>{
+                this.fetchItems();
+                resolve(true);
+            })
+            .catch((err)=>{
+                console.log('err removing item',err);
+                reject(err);
+            });
         });
+        
     }
     saveItem(item) {
         console.log('App.js saveItem item',item);
