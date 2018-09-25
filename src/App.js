@@ -49,14 +49,45 @@ export default class App extends React.Component {
         this.setState({items:items});
         return new Promise((resolve,reject)=>{
             //first remove all subitems
-            var subitems=this.state.items.filter((i)=>(i.parentId == _item._id));
+            var subitems=this.getAllSubitems(_item);
             console.log('also delete subitems ',subitems);
-            var subpromises=subitems.map((i)=>(this.removeItem(i)));
+            var subpromises=subitems.map((i)=>(removeItem(i)));
             Promise.all([
                 ...subpromises,
                 removeItem(_item)
             ])
             .then(()=>{
+                const undoToast=(<div className='alert alert-success'
+                style={{position:'fixed',bottom:'1%',left:'1%'}}>
+                    <button className='btn btn-link' style={{float:'right'}} 
+                    onClick={()=>{
+                        this.setState({toast:undefined});
+                    }}>X</button>
+                    Deleted {subitems.length + 1}  item{subitems.length === 0 ? '' : 's'}
+                    <button className='btn btn-link' onClick={
+                        ()=>{
+                            const restoreItems=[_item,...subitems];
+                            console.log('undo deletion of ',restoreItems);
+                            Promise.all(
+                                restoreItems.map((i)=>{
+                                    delete i._rev; delete i.saving;
+                                    return saveItem(i);
+                                })
+                            )
+                            .then(()=>{
+                                this.setState({toast:undefined});
+                                this.fetchItems();
+                            })
+                            .catch((err)=>{
+                                console.log('restore items err',err);
+                            });
+                        }}>
+                        UNDO
+                    </button>
+                </div>);
+                this.setState({
+                    toast:undoToast
+                });
                 this.fetchItems();
                 resolve(true);
             })
@@ -98,6 +129,7 @@ export default class App extends React.Component {
         });
     }
     render(){
+        const toast=this.state.toast;
         return (<div className='container'>
             <h1>TODO</h1>
             <List items={this.state.items} parentId='root' 
@@ -108,6 +140,7 @@ export default class App extends React.Component {
                     this.saveItem(item)
                 }}
             />
+            {toast}
         </div>);
     }
 }
